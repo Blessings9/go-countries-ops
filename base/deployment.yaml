@@ -16,6 +16,6 @@ spec:
     spec:
       containers:
       - name: go-countries
-        image: ghcr.io/blessings9/go-countries:v1.0.4
+        image: ghcr.io/blessings9/go-countries:v1.0.3
         ports:
         - containerPort: 8080
