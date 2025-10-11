@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: go-countries-deployment
+  labels:
+    app: go-countries
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: go-countries
+  template:
+    metadata:
+      labels:
+        app: go-countries
+    spec:
+      containers:
+      - name: go-countries
+        image: ghcr.io/blessings9/go-countries:v1.0.4
+        ports:
+        - containerPort: 8080
