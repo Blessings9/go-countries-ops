@@ -6,6 +6,7 @@ metadata:
 spec:
   parentRefs:
     - name: traefik-gateway
+      namespace: default
   hostnames:
     - go-api.cloudninja.io
   rules:
