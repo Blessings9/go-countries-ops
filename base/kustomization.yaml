@@ -5,4 +5,4 @@ namespace: go-countries-dev
 resources:
   - deployment.yaml
   - service.yaml
-  - httproute.yaml
+  - http-route.yaml
