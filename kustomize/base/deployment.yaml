@@ -13,6 +13,7 @@ spec:
     metadata:
       labels:
         app: go-countries
+        
     spec:
       containers:
       - name: go-countries
