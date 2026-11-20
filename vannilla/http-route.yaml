@@ -1,0 +1,19 @@
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: go-countries-httproute
+  namespace: go-countries        # same namespace as the "gateway" Service
+spec:
+  parentRefs:
+    - name: traefik-gateway
+      namespace: default         # where your Traefik Gateway lives
+  hostnames:
+    - go-api.cloudninja.io
+  rules:
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /
+      backendRefs:
+        - name: gateway          # Service name from k8s/gateway.yaml
+          port: 80               # Service port (forwards to container port 8080)
