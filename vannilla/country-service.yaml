@@ -1,0 +1,81 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: country-service
+  namespace: go-countries
+  labels:
+    app: country-service
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: country-service
+  template:
+    metadata:
+      labels:
+        app: country-service
+    spec:
+      # Uncomment if your GHCR packages are private (see README/notes for how to create it)
+      # imagePullSecrets:
+      #   - name: ghcr-pull
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 10001        # matches the "app" user in the image
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+        - name: country-service
+          image: ghcr.io/Blessings9/go-countries-service:latest   # <-- replace OWNER (lowercase); prefer a sha-xxxxxxx tag
+          imagePullPolicy: Always
+          ports:
+            - name: http
+              containerPort: 8081
+          env:
+            - name: PORT
+              value: "8081"
+            - name: RESTCOUNTRIES_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: restcountries-api-key
+                  key: RESTCOUNTRIES_API_KEY
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: http
+            initialDelaySeconds: 2
+            periodSeconds: 5
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: http
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          resources:
+            requests:
+              cpu: 25m
+              memory: 32Mi
+            limits:
+              cpu: 250m
+              memory: 128Mi
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop: ["ALL"]
+---
+# Internal only: just the gateway talks to this.
+apiVersion: v1
+kind: Service
+metadata:
+  name: country-service
+  namespace: go-countries
+  labels:
+    app: country-service
+spec:
+  type: ClusterIP
+  selector:
+    app: country-service
+  ports:
+    - name: http
+      port: 8081
+      targetPort: http
