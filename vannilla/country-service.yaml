@@ -6,7 +6,7 @@ metadata:
   labels:
     app: country-service
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: country-service
