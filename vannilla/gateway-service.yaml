@@ -24,7 +24,7 @@ spec:
           type: RuntimeDefault
       containers:
         - name: gateway
-          image: ghcr.io/Blessings9/go-countries-gateway:latest   # <-- replace OWNER (lowercase); prefer a sha-xxxxxxx tag
+          image: ghcr.io/blessings9/go-countries-gateway:latest   # <-- replace OWNER (lowercase); prefer a sha-xxxxxxx tag
           imagePullPolicy: Always
           ports:
             - name: http
